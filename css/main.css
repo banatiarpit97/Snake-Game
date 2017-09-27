@@ -1,0 +1,27 @@
+/*@keyframes mov {
+	from {top: 0px;left: 0px;}
+	to {top: 0px; left:50px;}
+}*/
+
+#boundary{
+	width: 80%;
+	height: 80%;
+	border-style: solid;
+	border-width: 5px;
+	border-color: black;
+	margin: 5% 10% 2.5% 10%;
+}
+#move{
+	background-color: blue;
+	position: absolute;
+/*	animation-name: mov;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;*/
+}
+.internal{
+	background-color: red;
+	width: 20px;
+	height: 20px;
+	float: left;
+}
+
