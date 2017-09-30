@@ -1,4 +1,10 @@
 // var a = $("#move").position();
+    angular.module('snake',['ngMaterial'])
+    .controller('SnakeGame', function($scope){
+        $scope.mode = "die hitting walls";
+        var abc = $scope.cb2;
+       console.log($scope.cb2)
+   
 var leftOffset = document.getElementById("boundary").offsetLeft;
 var topOffset = document.getElementById("boundary").offsetTop;
 var width = document.getElementById("boundary").offsetWidth;
@@ -112,22 +118,26 @@ z = hitItself(prevLeft, prevTop);
 if(z==1){
 	return;
 }
-// y = hitWall(prevLeft, prevTop);
-// if(y==1){
-// 	return;
-// }
-overflow = throughWall(prevLeft, prevTop);
-if(overflow == "rightOverflow"){
-	prevLeft = 0;
+if($scope.mode == "die hitting walls"){
+	y = hitWall(prevLeft, prevTop);
+	if(y==1){
+		return;
+	}
 }
-if(overflow == "leftOverflow"){
-	prevLeft = (width-30);
-}
-if(overflow == "downOverflow"){
-	prevTop = 0;
-}
-if(overflow == "topOverflow"){
-	prevTop = (height-30);
+else{	
+	overflow = throughWall(prevLeft, prevTop);
+	if(overflow == "rightOverflow"){
+		prevLeft = 0;
+	}
+	if(overflow == "leftOverflow"){
+		prevLeft = (width-30);
+	}
+	if(overflow == "downOverflow"){
+		prevTop = 0;
+	}
+	if(overflow == "topOverflow"){
+		prevTop = (height-30);
+	}
 }
 for(i=1;i<=count;i++)
  {
@@ -153,13 +163,13 @@ function hitItself(prevLeft, prevTop){
 	}
 }
 
-// function hitWall(prevLeft, prevTop){
-//    if((prevLeft >= width)||(prevLeft <= -35)||(prevTop >= height)||(prevTop == -40)){
-//    	  clearInterval(woah);
-// 	  gameon=false;
-// 	  return "1";
-//    }
-// }
+function hitWall(prevLeft, prevTop){
+   if((prevLeft >= width)||(prevLeft <= -35)||(prevTop >= height)||(prevTop == -40)){
+   	  clearInterval(woah);
+	  gameon=false;
+	  return "1";
+   }
+}
 
 function throughWall(prevLeft, prevTop){
    if((prevLeft+20) >= width){
@@ -175,3 +185,4 @@ function throughWall(prevLeft, prevTop){
    	  return "topOverflow";
    }
 }
+ })
