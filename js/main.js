@@ -2,8 +2,7 @@
     angular.module('snake',['ngMaterial'])
     .controller('SnakeGame', function($scope){
         $scope.mode = "die hitting walls";
-        var abc = $scope.cb2;
-       console.log($scope.cb2)
+        var score = 0;
    
 var leftOffset = document.getElementById("boundary").offsetLeft;
 var topOffset = document.getElementById("boundary").offsetTop;
@@ -45,6 +44,9 @@ function checkContact(prevLeft, prevTop,s, j){
 	    lastChildY = $(lastChild).position().top-j;
 		$("#boundary").append("<div class = 'internal'></div>");
 		count++;
+		score++;
+		$("#score").html(score)
+		console.log(score)
 		lastChild = ".internal:nth-child("+count+")";
 		$(lastChild).css("left", lastChildX);
 		$(lastChild).css("top", lastChildY );
