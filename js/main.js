@@ -112,9 +112,22 @@ z = hitItself(prevLeft, prevTop);
 if(z==1){
 	return;
 }
-y = hitWall(prevLeft, prevTop);
-if(y==1){
-	return;
+// y = hitWall(prevLeft, prevTop);
+// if(y==1){
+// 	return;
+// }
+overflow = throughWall(prevLeft, prevTop);
+if(overflow == "rightOverflow"){
+	prevLeft = 0;
+}
+if(overflow == "leftOverflow"){
+	prevLeft = (width-30);
+}
+if(overflow == "downOverflow"){
+	prevTop = 0;
+}
+if(overflow == "topOverflow"){
+	prevTop = (height-30);
 }
 for(i=1;i<=count;i++)
  {
@@ -140,10 +153,25 @@ function hitItself(prevLeft, prevTop){
 	}
 }
 
-function hitWall(prevLeft, prevTop){
-   if((prevLeft >= width)||(prevLeft <= -35)||(prevTop >= height)||(prevTop == -40)){
-   	  clearInterval(woah);
-	  gameon=false;
-	  return "1";
+// function hitWall(prevLeft, prevTop){
+//    if((prevLeft >= width)||(prevLeft <= -35)||(prevTop >= height)||(prevTop == -40)){
+//    	  clearInterval(woah);
+// 	  gameon=false;
+// 	  return "1";
+//    }
+// }
+
+function throughWall(prevLeft, prevTop){
+   if((prevLeft+20) >= width){
+   	  return "rightOverflow";
+   }
+    if((prevLeft-20) <= -35){
+   	  return "leftOverflow";
+   }
+    if((prevTop+20) >= height){
+   	  return "downOverflow";
+   }
+    if((prevTop-20) == -40){
+   	  return "topOverflow";
    }
 }
