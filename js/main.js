@@ -1,112 +1,149 @@
-var a = $("#move").position();
+// var a = $("#move").position();
 var leftOffset = document.getElementById("boundary").offsetLeft;
 var topOffset = document.getElementById("boundary").offsetTop;
 var width = document.getElementById("boundary").offsetWidth;
 var height = document.getElementById("boundary").offsetHeight;
-var count=0;
-var down = setInterval(moveDown, 100);
-clearInterval(down);
+var ele = document.getElementById("boundary");
 
-var up = setInterval(moveUp, 100);
-clearInterval(up);
+var minX = leftOffset;
+var maxX = leftOffset+width;
+console.log(maxX, width)
+// var minY = topOffset;
+var minY = 60;
+var maxY = topOffset+height;
+console.log(minX, maxX, minY, maxY);
+var u=".internal:nth-child("
+var r;
+var direction;
+var gameon=true;
+var count=ele.childElementCount;
+console.log(count);
+var left=100;
 
-var left = setInterval(moveLeft, 100);
-clearInterval(left);
 
-var right = setInterval(moveRight, 100);
+function generateFruit(){
+	randomFruitPosX = (Math.floor((Math.random() * ((maxX-20) - (minX+20))+(minX+20))/20)*20);
+    randomFruitPosY = (Math.floor((Math.random() * ((maxY-20) - (minY))+(minY))/20)*20)+5;
+    console.log(randomFruitPosX, randomFruitPosY);
+    $("#fruit").css("left", randomFruitPosX);
+    $("#fruit").css("top", randomFruitPosY);
+    $("#fruit").removeClass("hidden");
+};
+generateFruit();
+
+function checkContact(prevLeft, prevTop,s, j){
+ // subtracted because of margin and borders
+	if((prevLeft == (randomFruitPosX-60)) && ((prevTop) == (randomFruitPosY-5))){
+		lastChild = ".internal:nth-child("+count+")";
+		lastChildX = $(lastChild).position().left-s;
+	    lastChildY = $(lastChild).position().top-j;
+		$("#boundary").append("<div class = 'internal'></div>");
+		count++;
+		lastChild = ".internal:nth-child("+count+")";
+		$(lastChild).css("left", lastChildX);
+		$(lastChild).css("top", lastChildY );
+		generateFruit();
+    }
+}
+
+
+ 
+for(var i=1;i<=count;i++)
+{
+	r=u+i+")";
+	$(r).css("left",left);
+	left=left-20;
+}
+var prevPos;
+var prevLeft;
+var prevTop;
+var temp;
+var temp1;
+var i;
+function lef(){
+	move(-20,0);
+};
+function up(){
+	move(0,-20);
+};
+function down(){
+	move(0,20);
+};
+function right(){
+	move(20,0);
+};
+
+var woah = setInterval(right, 100);
 
 $(document).keypress(function(e){
-	if(String.fromCharCode(e.which) == "s"){
-		clearInterval(right);
-		clearInterval(left);
-		clearInterval(up);
-		down = setInterval(moveDown, 100);
+	if((String.fromCharCode(e.which) == "s") && (gameon) && (direction!="up")){
+		clearInterval(woah);
+		direction = "down";
+
+		woah=setInterval(down,100);
 	}
-})
+	else if((String.fromCharCode(e.which)=="d") && (gameon) && (direction!="left")){
+		clearInterval(woah);
+		direction = "right";
+
+		woah=setInterval(right,100);
+	}
+	else if((String.fromCharCode(e.which)=="a") && (gameon) && (direction!="right")){
+		clearInterval(woah);
+		direction = "left";
+
+		woah=setInterval(lef,100);
+	}
+	else if((String.fromCharCode(e.which)=="w") && (gameon) && (direction!="down")){
+		clearInterval(woah);
+		direction = "up";
+		woah=setInterval(up,100);
+	}
+});
 
 
-function moveRight() {
-	$("#move").css("left", a.left);
-	a.left +=25;
-	// if(($("#move").position().left % 3) ==  0){
-	// 	$("#move").prepend("<div class = 'internal'>1</div>");
-	// }
-	console.log($("#move").position().left)
-	if($("#move").position().left >= width){
-     clearInterval(right)
-    }
+function move(s,j)
+{
+prevPos=$(".internal:nth-child(1)").position();
+prevLeft=prevPos.left+s;
+prevTop=prevPos.top+j;
+checkContact(prevLeft, prevTop,s, j);
+z = hitItself(prevLeft, prevTop);
+if(z==1){
+	return;
+}
+y = hitWall(prevLeft, prevTop);
+if(y==1){
+	return;
+}
+for(i=1;i<=count;i++)
+ {
+	r=u+i+")";
+	temp=$(r).position();
+	$(r).css("left",prevLeft);
+	$(r).css("top",prevTop);
+	prevLeft=temp.left;
+	prevTop=temp.top;
+ }
+};
+
+
+function hitItself(prevLeft, prevTop){
+	
+	for(i=2;i<=count;i++){
+		r=u+i+")";
+		if(($(r).position().left == prevLeft) && ($(r).position().top==prevTop)){
+			clearInterval(woah);
+			gameon = false;
+			return "1";
+		}
+	}
 }
 
-function moveDown(){
-	a.top += 20;
-	$("#move").css("top", a.top);
-	if($("#move").position().top >= height){
-		console.log("hh")
-        clearInterval(down)
-    }
+function hitWall(prevLeft, prevTop){
+   if((prevLeft >= width)||(prevLeft <= -35)||(prevTop >= height)||(prevTop == -40)){
+   	  clearInterval(woah);
+	  gameon=false;
+	  return "1";
+   }
 }
-
-function moveLeft(){
-	a.left -= 20;
-	$("#move").css("left", a.left);
-	if($("#move").position().left <= leftOffset){
-     clearInterval(left)
-    }
-}
-
-function moveUp(){
-	a.top -= 20;
-	$("#move").css("top", a.top);
-	if($("#move").position().top <= topOffset){
-     clearInterval(top)
-    }
-}
-
-
-
-// function preDown()
-// {
-// 	count++;
-
-
-
-
-
-
-// }
-var ele = document.getElementById("move");
-console.log(ele.childElementCount)
-
-// $(document).keypress(function(e){
-// 	if(String.fromCharCode(e.which) == "w"){
-// 		clearInterval(right);
-// 		clearInterval(left);
-// 		clearInterval(down);
-// 		var up = setInterval(moveUp, 300);
-
-// 	}
-
-// })
-
-// $(document).keypress(function(e){
-// 	if(String.fromCharCode(e.which) == "a"){
-// 		clearInterval(right);
-// 			clearInterval(up);
-// 		clearInterval(down);
-
-// 		var left = setInterval(moveLeft, 300);
-
-// 	}
-
-// })
-
-// $(document).keypress(function(e){
-// 	if(String.fromCharCode(e.which) == "d"){
-// 		clearInterval(up);
-// 		clearInterval(left);
-// 		clearInterval(down);
-// 		var right = setInterval(moveRight, 300);
-
-// 	}
-
-// })

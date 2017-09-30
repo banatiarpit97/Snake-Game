@@ -1,27 +1,29 @@
-/*@keyframes mov {
-	from {top: 0px;left: 0px;}
-	to {top: 0px; left:50px;}
-}*/
-
 #boundary{
-	width: 80%;
-	height: 80%;
+	width: 750px;  /*any 20 multiple + 10 due to border*/
+	height: 450px; /*20 multiple + 10 due to border*/
 	border-style: solid;
 	border-width: 5px;
 	border-color: black;
-	margin: 5% 10% 2.5% 10%;
+	margin-top: 55px; /*any 20 multiple - 5 due to border*/
+	margin-left: 55px; /*any 20 multiple - 5 due to border*/
+	position: relative;
 }
-#move{
-	background-color: blue;
-	position: absolute;
-/*	animation-name: mov;
-	animation-duration: 2s;
-	animation-iteration-count: infinite;*/
+#boundary div:first-child{
+	background-color: green;
 }
 .internal{
+	margin: 0;
+	padding: 0;
 	background-color: red;
 	width: 20px;
 	height: 20px;
 	float: left;
+	position: absolute;
 }
 
+#fruit{
+	width: 20px;
+	height: 20px;
+	background-color: blue;
+	position: absolute;
+}
