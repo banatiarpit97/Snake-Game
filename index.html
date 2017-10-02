@@ -27,15 +27,42 @@
 </div>
 <span id="fruit" class="hidden"></span>
 
-<div>
-     <md-switch ng-model="mode" aria-label="Switch 2" ng-true-value="'overflow'" ng-false-value="'die hitting walls'" class="md-primary">
-    Game Mode: {{mode}}
-  </md-switch>
+
+
+<div class="keyboard">
+<div class="row1"><div class="key wkey">W</div></div>
+<div class="row2"><div class="key akey">A</div><div class="key skey">S</div><div class="key dkey">D</div></div>
 </div>
 
 <div class="scorediv">
-    Your score is <span id="score">0</span>
+    Your score : <span id="score">0</span>
 </div>
+
+<div class="playButton">
+    <md-content>
+        <section layout="row" layout-sm="column" layout-wrap>
+            <md-button class="md-raised md-primary" ng-click="mode($event)">Play Game</md-button>
+        </section>
+    </md-content>        
+</div>
+
+<div class="pause-restart">
+    <md-content>
+        <section layout="row" layout-sm="column" layout-wrap>
+            <md-button class="md-raised md-primary pause">Pause</md-button>
+            <md-button class="md-raised md-primary restart">Restart</md-button>
+
+        </section>
+    </md-content>        
+</div>
+
+<audio id="hit">
+    <source src="sounds/hit.mp3" type="audio/mp3">
+</audio>
+
+<audio id="eat">
+    <source src="sounds/eat1.mp3" type="audio/mp3">
+</audio>
 
 
 

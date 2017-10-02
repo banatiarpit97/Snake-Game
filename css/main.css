@@ -1,5 +1,12 @@
+html{
+	overflow: hidden;
+}
+body{
+	padding-top: 0px;
+	position: absolute;
+}
 #boundary{
-	width: 750px;  /*any 20 multiple + 10 due to border*/
+	width: 770px;  /*any 20 multiple + 10 due to border*/
 	height: 450px; /*20 multiple + 10 due to border*/
 	border-style: solid;
 	border-width: 5px;
@@ -27,3 +34,67 @@
 	background-color: blue;
 	position: absolute;
 }
+
+.key{
+  background-color:#e0dcdc;
+  width:80px;
+  height:80px;
+  text-align:center;
+  font-size:2em;
+  line-height:80px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.row1 .key{
+  margin-left:85px;
+}
+.row2 .key{
+  float:left;
+}
+.keyboard{
+  text-align:center;
+  float: right;
+  margin-top: -54%;
+  margin-right: -45%;
+}
+.scorediv{
+	float: right;
+    font-size: 4em;
+    margin-top: -31%;
+    margin-right: -51%;
+}
+.playButton{
+	float: right;
+    margin-top: -8%;
+    margin-right: -39%;
+}
+.playButton button{
+	font-size: 1.7em;
+    font-weight: bold;
+    padding: 5%;
+    width: 160px;
+    padding-right: 15%;
+}
+.pause-restart{
+	float: right;
+    margin-top: -7%;
+    margin-right: -31%;
+}
+.pause-restart button{
+	font-size: 1.7em;
+    font-weight: bold;
+    padding: 2%;
+    width: 158px;
+}
+html.md-default-theme, html, body.md-default-theme, body {
+    color: rgba(0,0,0,0.87);
+    background-color: rgb(255, 255, 255);
+}
+/*.md-dialog-container{
+	position: absolute;
+	left: 28%;
+	top: -20%;
+}
+*/
