@@ -25,8 +25,11 @@
         </md-toolbar>
 
         <md-dialog-content>
+          <md-tabs md-dynamic-height md-border-bottom>
+           <md-tab label="Mode"> 
+            <md-content >
             <div class="md-dialog-content">
-                <h3>Game Mode</h3>
+                <h3>Game Mode:</h3>
                 <div>
                      <md-switch ng-model="overflow" aria-label="Switch 2" ng-true-value="'overflow'" ng-false-value="'die hitting walls'" class="md-primary">
                     Game Mode: {{overflow}}
@@ -53,6 +56,14 @@
  -->
                 </form>
             </div>
+            </md-content>
+         </md-tab>
+         <md-tab label="Instructions"> 
+            <md-content class="md-padding">
+
+            </md-content>
+         </md-tab>
+        </md-tabs> 
         </md-dialog-content>
 
         <md-dialog-actions layout="row">

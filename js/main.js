@@ -121,27 +121,27 @@ function checkContact(prevLeft, prevTop,s, j){
     }
 }
 
-$("#boundary").click(function(e){
+$("#boundary").mousedown(function(e){
 	clickX = (e.pageX-leftOffset-5);
 	clickY = (e.pageY-topOffset-5);
 	prevPosX = $(".internal:nth-child(1)").position().left;
 	prevPosY = $(".internal:nth-child(1)").position().top;
-	if((clickY>prevPosY) && (direction != "up")){
+	if((clickY>prevPosY) && (direction != "up") && (direction != "down")){
 		clearInterval(woah);
 		direction = "down";
 		woah=setInterval(down,frequency);
 	}
-	else if((clickY<prevPosY) && (direction != "down")){
+	else if((clickY<prevPosY) && (direction != "down") && (direction != "up")){
 		clearInterval(woah);
 		direction = "up";
 		woah=setInterval(up,frequency);
 	}
-	else if((clickX>prevPosX) && (direction != "left")){
+	else if((clickX>prevPosX) && (direction != "left") && (direction != "right")){
 		clearInterval(woah);
 		direction = "right";
 		woah=setInterval(right,frequency);
 	}
-	else if((clickX<prevPosX) && (direction != "right")){
+	else if((clickX<prevPosX) && (direction != "right") && (direction != "left")){
 		clearInterval(woah);
 		direction = "left";
 		woah=setInterval(lef,frequency);
@@ -214,28 +214,29 @@ function right(){
 
 
 $(document).keypress(function(e){
-	if((String.fromCharCode(e.which) == "s") && (gameon) && (direction!="up")){
+	if((String.fromCharCode(e.which) == "s") && (gameon) && (direction!="up") && (direction!="down")){
+		
 		clearInterval(woah);
 		direction = "down";
 		woah=setInterval(down,frequency);
 		$(".skey").css("background-color", "grey");
 		setTimeout(function(){$(".skey").css("background-color", "#e0dcdc")}, 300)
 	}
-	else if((String.fromCharCode(e.which)=="d") && (gameon) && (direction!="left")){
+	else if((String.fromCharCode(e.which)=="d") && (gameon) && (direction!="left") && (direction!="right")){
 		clearInterval(woah);
 		direction = "right";
 		woah=setInterval(right,frequency);
 		$(".dkey").css("background-color", "grey");
 		setTimeout(function(){$(".dkey").css("background-color", "#e0dcdc")}, 300)
 	}
-	else if((String.fromCharCode(e.which)=="a") && (gameon) && (direction!="right")){
+	else if((String.fromCharCode(e.which)=="a") && (gameon) && (direction!="right") && (direction!="left")){
 		clearInterval(woah);
 		direction = "left";
 		woah=setInterval(lef,frequency);
 		$(".akey").css("background-color", "grey");
 		setTimeout(function(){$(".akey").css("background-color", "#e0dcdc")}, 300)
 	}
-	else if((String.fromCharCode(e.which)=="w") && (gameon) && (direction!="down")){
+	else if((String.fromCharCode(e.which)=="w") && (gameon) && (direction!="down") && (direction!="up")){
 		clearInterval(woah);
 		direction = "up";
 		woah=setInterval(up,frequency);
@@ -243,6 +244,38 @@ $(document).keypress(function(e){
 		setTimeout(function(){$(".wkey").css("background-color", "#e0dcdc")}, 300)
 	}
 });
+
+$(document).keydown(function(e){
+	if((e.keyCode == '40') && (gameon) && (direction!="up") && (direction!="down")){
+		clearInterval(woah);
+		direction = "down";
+		woah=setInterval(down,frequency);
+		$(".skey").css("background-color", "grey");
+		setTimeout(function(){$(".skey").css("background-color", "#e0dcdc")}, 300)
+	}
+	else if((e.keyCode == '39') && (gameon) && (direction!="left") && (direction!="right")){
+		clearInterval(woah);
+		direction = "right";
+		woah=setInterval(right,frequency);
+		$(".dkey").css("background-color", "grey");
+		setTimeout(function(){$(".dkey").css("background-color", "#e0dcdc")}, 300)
+	}
+	else if((e.keyCode == '37') && (gameon) && (direction!="right") && (direction!="left")){
+		clearInterval(woah);
+		direction = "left";
+		woah=setInterval(lef,frequency);
+		$(".akey").css("background-color", "grey");
+		setTimeout(function(){$(".akey").css("background-color", "#e0dcdc")}, 300)
+	}
+	else if((e.keyCode == '38') && (gameon) && (direction!="down") && (direction!="up")){
+		clearInterval(woah);
+		direction = "up";
+		woah=setInterval(up,frequency);
+		$(".wkey").css("background-color", "grey");
+		setTimeout(function(){$(".wkey").css("background-color", "#e0dcdc")}, 300)
+	}
+});
+
 
 	$(".skey").click(function(){
 		if((gameon) && (direction!="up")){
