@@ -2,6 +2,7 @@
     angular.module('snake',['ngMaterial'])
     .controller('SnakeGame', function($scope, $mdDialog){
         var score = 0;
+        var scorered = 0;
         var mode;
         var speed;
         var woah;
@@ -14,16 +15,18 @@ var count = document.getElementById("boundary").childElementCount;
 var hit = document.getElementById("hit"); 
 var eat = document.getElementById("eat"); 
 var playedOnce;
-
-console.log(topOffset);
-
 var minX = leftOffset;
 var maxX = leftOffset+width;
 var minY = topOffset;
 var maxY = topOffset+height;
+console.log(minY, maxY);
 var u=".internal:nth-child("
 var r;
 var direction;
+var bonus = -1;
+var bonust;
+var date = new Date();
+$("#year").html(date.getFullYear());
 var gameon=false;
         $(".pause").hide();
         $(".restart").hide();
@@ -38,15 +41,13 @@ var gameon=false;
 						 });
 
 		 };
-// $(".playButton").click(function(){
-// 	if(playedOnce){
-// 		location.reload();
-// 	}
-// })		 
-
-
 
 		function DialogController($scope, $mdDialog) {
+			console.log("hh", playedOnce)
+			if(playedOnce){
+				             console.log("hh")
+						 		restart();
+						 	}
 
             $scope.overflow = "die hitting walls";
             $scope.speed = "medium";
@@ -58,6 +59,7 @@ var gameon=false;
 								 $mdDialog.cancel();
 						 };
 						 $scope.confirmMode = function() {
+
                mode = $scope.overflow;
                speed = $scope.speed;
                    if(speed == "slow"){
@@ -72,13 +74,15 @@ var gameon=false;
                     console.log(speed, frequency)
                     // startPosition();
                woah = setInterval(right, frequency);
+               console.log(playedOnce)
                gameon = true;
                direction ="right";
                $(".playButton").hide();
                $(".pause").show();
                $(".restart").show();
-               $(".keyboard").css({"margin-top":"-47%", "margin-right":"-24%"});
-               $(".scorediv").css({"margin-top":"-27%", "margin-right":"-31%"});
+               // $(".keyboard").css({"margin-top":"-47%", "margin-right":"-24%"});
+               // $(".scorediv").css({"margin-top":"-27%", "margin-right":"-31%"});
+               // $(".header").css("padding-right", "21%");
 
 
 
@@ -92,26 +96,49 @@ var gameon=false;
 
 var left=((count-1)*20);
 
-
-
 function generateFruit(){
 	randomFruitPosX = (Math.floor((Math.random() * ((maxX-20) - (minX+20))+(minX+20))/20)*20);
-    randomFruitPosY = (Math.floor((Math.random() * ((maxY-20) - (minY+20))+(minY+20))/20)*20);
+    randomFruitPosY = (Math.floor((Math.random() * ((maxY-10) - (minY+10))+(minY+10))/20)*20);
     $("#fruit").css("left", randomFruitPosX);
     $("#fruit").css("top", randomFruitPosY);
+    // if((scorered%2 == 0) && (scorered!=0) && ((scorered-bonus)%2==0)){
+    // 	$("#fruit").css("background-color", "orange");
+    // 	bonus = true;
+    // 	$("#fruit").html(7);
+    // 	bonust = setInterval(bonusTimer, 1000);
+
+    // }
+    // else{
+    // 	$("#fruit").css("background-color", "red");
+    // 	$("#fruit").html("");
+    // }
     $("#fruit").removeClass("hidden");
 };
 generateFruit();
 
 function checkContact(prevLeft, prevTop,s, j){
  // subtracted because of margin and borders
-	if((prevLeft == (randomFruitPosX-60)) && ((prevTop) == (randomFruitPosY-60))){
+	if((prevLeft == (randomFruitPosX-60)) && ((prevTop) == (randomFruitPosY-120))){
 		eat.play();
 		lastChild = ".internal:nth-child("+count+")";
 		lastChildX = $(lastChild).position().left-s;
 	    lastChildY = $(lastChild).position().top-j;
 		$("#boundary").append("<div class = 'internal'></div>");
 		count++;
+		// if(bonus){
+		// 	score +=5;
+		// 	bonus++;
+		// 	bonus = false;
+		// 	clearInterval(bonusTimer);
+		// }
+		// else{
+		// 	score++;
+		// scorered++;
+		// if((scorered%2)==0){
+		// 	bonus++;
+		// }
+
+		// }
 		score++;
 		$("#score").html(score)
 		lastChild = ".internal:nth-child("+count+")";
@@ -126,22 +153,22 @@ $("#boundary").mousedown(function(e){
 	clickY = (e.pageY-topOffset-5);
 	prevPosX = $(".internal:nth-child(1)").position().left;
 	prevPosY = $(".internal:nth-child(1)").position().top;
-	if((clickY>prevPosY) && (direction != "up") && (direction != "down")){
+	if((clickY>prevPosY) && (direction != "up") && (direction != "down") && (gameon)){
 		clearInterval(woah);
 		direction = "down";
 		woah=setInterval(down,frequency);
 	}
-	else if((clickY<prevPosY) && (direction != "down") && (direction != "up")){
+	else if((clickY<prevPosY) && (direction != "down") && (direction != "up") && (gameon)){
 		clearInterval(woah);
 		direction = "up";
 		woah=setInterval(up,frequency);
 	}
-	else if((clickX>prevPosX) && (direction != "left") && (direction != "right")){
+	else if((clickX>prevPosX) && (direction != "left") && (direction != "right") && (gameon)){
 		clearInterval(woah);
 		direction = "right";
 		woah=setInterval(right,frequency);
 	}
-	else if((clickX<prevPosX) && (direction != "right") && (direction != "left")){
+	else if((clickX<prevPosX) && (direction != "right") && (direction != "left") && (gameon)){
 		clearInterval(woah);
 		direction = "left";
 		woah=setInterval(lef,frequency);
@@ -150,14 +177,10 @@ $("#boundary").mousedown(function(e){
 
 })
 
-$(".playButton").click(function(){
-	if(playedOnce){
-		location.reload();
-	}
-})
-
 $(".restart").click(function(){
-  location.reload();
+	clearInterval(woah)
+	gameEnd();
+    restart();
 })
 $(".pause").click(function(){
   if(gameon){
@@ -181,10 +204,34 @@ $(".pause").click(function(){
     gameon = true;
     $(this).html("Pause");
   } 
-
 });
 
+$(document).keydown(function(e){
+if(e.keyCode == '32'){
 
+  if(gameon){
+    clearInterval(woah);
+    gameon = false;
+    $(".pause").html("Resume");
+  }
+  else{
+    if(direction == "right"){
+       woah=setInterval(right,frequency);
+    }
+    else if(direction == "left"){
+       woah=setInterval(lef,frequency);
+    }
+    else if(direction == "up"){
+       woah=setInterval(up,frequency);
+    }
+    else if(direction == "down"){
+       woah=setInterval(down,frequency);
+    }
+    gameon = true;
+    $(".pause").html("Pause");
+  } 
+ } 
+});
 
 // to reverse the order of internal div 
 for(var i=1;i<=count;i++)
@@ -321,6 +368,7 @@ $(document).keydown(function(e){
 function move(s,j)
 {
 prevPos=$(".internal:nth-child(1)").position();
+// console.log(prevPos.left, prevPos.top)
 prevLeft=prevPos.left+s;
 prevTop=prevPos.top+j;
 checkContact(prevLeft, prevTop,s, j);
@@ -377,7 +425,8 @@ function hitItself(prevLeft, prevTop){
 
 function hitWall(prevLeft, prevTop){
 	// -20 to stop at the boundary only, not go ahead
-   if((prevLeft >= (width-20))||(prevLeft <= -15)||(prevTop >= (height-20))||(prevTop == -20)){
+   if((prevLeft >= (width-20))||(prevLeft == -20)||(prevTop >= (height-20))||(prevTop == -20)){
+   	  console.log(prevLeft, height)
    	  clearInterval(woah);
 	  gameon=false;
       hit.play();
@@ -400,29 +449,59 @@ function throughWall(prevLeft, prevTop){
    	  return "topOverflow";
    }
 }
- })
+function restart(){
+count = 6;
+left=((count-1)*20);
+//to reverse the order of internal div 
+$("#boundary").html("");
+u=".internal:nth-child("
+for(var i=1;i<=count;i++)
+{
+  $("#boundary").append("<div class='internal'></div>");
+  r=u+i+")";
+  $(r).css({"left":left, "top":0});
+
+  left=left-20;
+}
+score = 0;
+scorered =0;
+$("#score").html(score);
+direction = "right";
+
+}
 
 function gameEnd(){
     $(".pause").hide();
     $(".restart").hide();
 	$(".playButton").show();
-	$(".keyboard").css({"margin-top":"-54%", "margin-right":"-45%"});
-    $(".scorediv").css({"margin-top":"-31%", "margin-right":"-51%"});
+	// $(".keyboard").css({"margin-top":"-54%", "margin-right":"-45%"});
+ //    $(".scorediv").css({"margin-top":"-31%", "margin-right":"-51%"});
+ //    $(".header").css("padding-right", "0");
+
     playedOnce = true;
 }
 
-// function startPosition(){
-// var count = 6;
-// var left=((count-1)*20);
-// //to reverse the order of internal div 
-// for(var i=1;i<=count;i++)
-// {
-//   r=u+i+")";
-//   $(r).css("left",left);
-//   left=left-20;
-// }
-// score = 0;
-// $("#score").html(score);
-// direction = right;
 
+// function bonusTimer(){
+// 	bt = $("#fruit").html();
+// 	bt--;
+// 	a= typeof bt;
+// 	console.log(bt, a)
+// 	if(bt == 0){
+// 		bonus=false;
+// 		bonus++;
+// 		clearInterval(bonust);
+// 		generateFruit();
+// 	}
+// 	else{
+// 	    $("#fruit").html(bt);
+// 	}
 // }
+
+ })
+// $("#fruit").css("background-color", "orange");
+
+
+
+
+
